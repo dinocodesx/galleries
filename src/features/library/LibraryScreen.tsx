@@ -1,11 +1,15 @@
+import { useState } from "react";
 import type { AlbumPayload, AlbumSummary, LibraryOverview } from "../../shared/types/library";
 import { EmptyState } from "../../shared/ui/EmptyState";
 import { InlineError } from "../../shared/ui/InlineError";
 import { LoadingPanel } from "../../shared/ui/LoadingPanel";
-import { AlbumHeader } from "./components/AlbumHeader";
+import { AlbumGrid } from "./components/AlbumGrid";
 import { PhotoGrid } from "./components/PhotoGrid";
-import { Sidebar } from "./components/Sidebar";
+import { Sidebar } from "../../shared/ui/Sidebar";
 import "./library.css";
+import { formatCount, formatIndexedAt } from "../../shared/lib/format";
+
+type LibraryView = "library-grid" | "album";
 
 type LibraryScreenProps = {
   overview: LibraryOverview;
@@ -21,7 +25,6 @@ type LibraryScreenProps = {
 
 export function LibraryScreen({
   overview,
-  selectedAlbumId,
   selectedAlbum,
   albumPayload,
   isAlbumLoading,
@@ -30,32 +33,86 @@ export function LibraryScreen({
   onReindexFolder,
   onOpenPhoto,
 }: LibraryScreenProps) {
+  const [view, setView] = useState<LibraryView>("library-grid");
+
+  function handleSelectAlbum(albumId: number) {
+    setView("album");
+    onSelectAlbum(albumId);
+  }
+
+  function handleShowLibrary() {
+    setView("library-grid");
+  }
+
   return (
     <div className="library-shell">
       <Sidebar
         overview={overview}
-        selectedAlbumId={selectedAlbumId}
-        onSelectAlbum={onSelectAlbum}
+        isLibraryView={view === "library-grid"}
+        onShowLibrary={handleShowLibrary}
         onReindexFolder={onReindexFolder}
       />
 
       <main className="library-main">
-        <AlbumHeader overview={overview} selectedAlbum={selectedAlbum} />
 
-        {error ? <InlineError message={error} /> : null}
+        {/* Library Grid View — Albums */}
+        {view === "library-grid" && (
+          <>
+            <div className="library-section-header">
+              <h2 className="library-section-title">Albums</h2>
+              <p className="library-section-meta">
+                {overview.totalAlbumsWithPhotos} album{overview.totalAlbumsWithPhotos !== 1 ? "s" : ""}&nbsp;·&nbsp;{overview.totalPhotos} photos
+              </p>
+            </div>
 
-        {isAlbumLoading ? <LoadingPanel message="Loading album..." /> : null}
+            <div className="library-scroll-body">
+              {error ? <InlineError message={error} /> : null}
+              <AlbumGrid albums={overview.albums} onSelectAlbum={handleSelectAlbum} />
+            </div>
+          </>
+        )}
 
-        {!isAlbumLoading && albumPayload && albumPayload.photos.length === 0 ? (
-          <EmptyState
-            title="This folder does not contain images directly."
-            body="Nested folders were still indexed and are available in the sidebar."
-          />
-        ) : null}
+        {/* Album Detail View */}
+        {view === "album" && (
+          <>
+            <div className="library-section-header">
+              <button
+                type="button"
+                onClick={handleShowLibrary}
+                className="library-back-btn"
+              >
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <polyline points="15 18 9 12 15 6"/>
+                </svg>
+                Back to Albums
+              </button>
+              <h2 className="library-section-title">
+                {selectedAlbum?.name ?? "Choose an album"}
+              </h2>
+              <p className="library-section-meta">
+                {selectedAlbum ? formatCount(selectedAlbum.photoCount, "photo", "photos") : "0 photos"}
+                &nbsp;·&nbsp;Indexed {formatIndexedAt(overview.indexedAt)}
+              </p>
+            </div>
 
-        {!isAlbumLoading && albumPayload && albumPayload.photos.length > 0 ? (
-          <PhotoGrid photos={albumPayload.photos} onOpenPhoto={onOpenPhoto} />
-        ) : null}
+            <div className="library-scroll-body">
+              {error ? <InlineError message={error} /> : null}
+              {isAlbumLoading ? <LoadingPanel message="Loading album..." /> : null}
+
+              {!isAlbumLoading && albumPayload && albumPayload.photos.length === 0 ? (
+                <EmptyState
+                  title="This folder does not contain images directly."
+                  body="Nested folders were still indexed and are available in the library."
+                />
+              ) : null}
+
+              {!isAlbumLoading && albumPayload && albumPayload.photos.length > 0 ? (
+                <PhotoGrid photos={albumPayload.photos} onOpenPhoto={onOpenPhoto} />
+              ) : null}
+            </div>
+          </>
+        )}
+
       </main>
     </div>
   );

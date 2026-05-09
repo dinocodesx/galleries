@@ -11,10 +11,6 @@ export function PhotoTile({ photo, onOpenPhoto }: PhotoTileProps) {
   return (
     <button className="photo-tile" onClick={() => onOpenPhoto(photo.id)} type="button">
       <img alt={photo.fileName} loading="lazy" src={buildAssetUrl(photo.path) ?? ""} />
-      <div className="photo-meta">
-        <span>{photo.fileName}</span>
-        <small>{formatShotDate(photo.sortTimestamp)}</small>
-      </div>
     </button>
   );
 }
