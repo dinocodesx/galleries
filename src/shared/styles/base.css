@@ -1,0 +1,129 @@
+@import "./tokens.css";
+
+:root {
+  color: var(--color-text);
+  background:
+    radial-gradient(circle at top, rgba(185, 206, 226, 0.38), transparent 38%),
+    linear-gradient(180deg, #f7f5f1 0%, #eeebe5 100%);
+  font-family: "SF Pro Text", "Avenir Next", "Helvetica Neue", sans-serif;
+  font-size: 16px;
+  font-synthesis: none;
+  line-height: 1.45;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  color: var(--color-text);
+}
+
+button {
+  font: inherit;
+}
+
+.screen-kicker {
+  margin: 0 0 0.75rem;
+  color: #6b7683;
+  font-size: 0.74rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.screen-lede {
+  margin: 1rem 0 0;
+  max-width: 38rem;
+  font-size: 1.05rem;
+  color: var(--color-text-muted);
+}
+
+.ui-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.9rem 1.25rem;
+  border: 0;
+  border-radius: 999px;
+  cursor: pointer;
+  transition:
+    transform 140ms ease,
+    background-color 140ms ease,
+    border-color 140ms ease,
+    box-shadow 140ms ease;
+}
+
+.ui-button:hover {
+  transform: translateY(-1px);
+}
+
+.ui-button--primary {
+  background: linear-gradient(180deg, var(--color-primary-start) 0%, var(--color-primary-end) 100%);
+  color: #ffffff;
+  box-shadow: var(--shadow-button);
+}
+
+.ui-button--secondary {
+  background: rgba(255, 255, 255, 0.82);
+  color: var(--color-text);
+  border: 1px solid var(--color-border);
+}
+
+.ui-button--block {
+  width: 100%;
+}
+
+.ui-inline-error {
+  margin: 0;
+  color: #a13e3e;
+}
+
+.ui-empty-state,
+.ui-loading-panel {
+  display: grid;
+  place-items: center;
+  min-height: 240px;
+  padding: 2rem;
+  text-align: center;
+  border-radius: 1.5rem;
+  background: rgba(255, 255, 255, 0.66);
+  border: 1px solid var(--color-border);
+}
+
+.ui-empty-state h3,
+.ui-empty-state p,
+.ui-loading-panel p {
+  margin: 0;
+}
+
+.ui-empty-state p,
+.ui-loading-panel p {
+  color: var(--color-text-muted);
+}
+
+.ui-spinner {
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: 999px;
+  border: 3px solid rgba(33, 88, 143, 0.18);
+  border-top-color: var(--color-primary-end);
+  animation: ui-spin 900ms linear infinite;
+}
+
+@keyframes ui-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}

@@ -1,0 +1,12 @@
+:root {
+  --color-text: #19212a;
+  --color-text-muted: #64707d;
+  --color-text-subtle: #6d7885;
+  --color-border: rgba(25, 33, 42, 0.08);
+  --color-surface-muted: rgba(25, 33, 42, 0.08);
+  --color-surface-panel: rgba(255, 255, 255, 0.72);
+  --color-primary-start: #2f6bb2;
+  --color-primary-end: #21588f;
+  --shadow-panel: 0 20px 60px rgba(56, 67, 79, 0.12);
+  --shadow-button: 0 16px 30px rgba(33, 88, 143, 0.22);
+}
