@@ -1,5 +1,6 @@
 import type { PhotoRecord } from "../../../shared/types/library";
 import { PhotoTile } from "./PhotoTile";
+import "./PhotoGrid.css";
 
 type PhotoGridProps = {
   photos: PhotoRecord[];

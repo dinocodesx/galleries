@@ -1,5 +1,6 @@
 use std::fs;
 
+use rusqlite::Connection;
 use tauri::{AppHandle, WebviewWindow};
 
 use crate::{
@@ -37,6 +38,12 @@ pub fn load_album_photos(app: AppHandle, album_id: i64) -> Result<AlbumPayload, 
     load_album_photos_impl(app, album_id).map_err(String::from)
 }
 
+fn get_db_connection(app: &AppHandle) -> AppResult<Connection> {
+    let conn = open_database(app)?;
+    initialize_database(&conn)?;
+    Ok(conn)
+}
+
 fn index_library_impl(
     app: AppHandle,
     window: WebviewWindow,
@@ -61,12 +68,11 @@ fn index_library_impl(
             scan_result.folder_count(),
             scan_result.albums_with_photos_count(),
             scan_result.photo_count(),
-            Some(canonical_root.to_string_lossy().to_string()),
+            Some(canonical_root.to_string_lossy().into_owned()),
         ),
     )?;
 
-    let mut conn = open_database(&app)?;
-    initialize_database(&conn)?;
+    let mut conn = get_db_connection(&app)?;
     write_index_to_database(&mut conn, &canonical_root, scan_result.folders, scan_result.photos)?;
 
     let overview = load_library_overview(&conn)?
@@ -90,14 +96,12 @@ fn index_library_impl(
 }
 
 fn get_library_overview_impl(app: AppHandle) -> AppResult<Option<LibraryOverview>> {
-    let conn = open_database(&app)?;
-    initialize_database(&conn)?;
+    let conn = get_db_connection(&app)?;
     load_library_overview(&conn)
 }
 
 fn load_album_photos_impl(app: AppHandle, album_id: i64) -> AppResult<AlbumPayload> {
-    let conn = open_database(&app)?;
-    initialize_database(&conn)?;
+    let conn = get_db_connection(&app)?;
 
     let album = load_album_summary(&conn, album_id)?
         .ok_or_else(|| AppError::new("That album no longer exists in the index."))?;

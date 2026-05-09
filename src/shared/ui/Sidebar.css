@@ -1,0 +1,129 @@
+/* ── Sidebar shell ───────────────────────────────────────────────── */
+
+.library-sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  padding: 1.4rem;
+  background: var(--color-surface-level-1);
+  border-right: 1px solid var(--color-border);
+  height: 100vh;
+  overflow-y: auto;
+}
+
+/* ── Sidebar nav ─────────────────────────────────────────────────── */
+
+.sidebar-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.sidebar-nav-item {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  width: 100%;
+  padding: 0.72rem 1.1rem;
+  border: none;
+  border-radius: 999px;
+  cursor: pointer;
+  text-align: left;
+  font-size: 0.95rem;
+  font-weight: 500;
+  background: transparent;
+  color: var(--color-text);
+  transition: background 160ms ease, color 160ms ease;
+}
+
+.sidebar-nav-item:hover {
+  background: var(--color-surface-level-2);
+}
+
+.sidebar-nav-item--active {
+  background: var(--color-surface-level-2);
+  color: var(--color-primary-container);
+}
+
+/* Re-index: same shape, just slightly muted */
+.sidebar-nav-item--action {
+  color: var(--color-text-muted);
+  font-weight: 500;
+}
+
+.sidebar-nav-item--action:hover {
+  background: var(--color-surface-level-2);
+  color: var(--color-text);
+}
+
+/* ── Stats panel ─────────────────────────────────────────────────── */
+
+.sidebar-stats {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.sidebar-stats div {
+  padding: 0.95rem 1rem;
+  border-radius: 1rem;
+  background: var(--color-surface-level-2);
+  border: 1px solid var(--color-border);
+}
+
+.sidebar-stats span {
+  display: block;
+  color: var(--color-text-subtle);
+  font-size: 0.82rem;
+}
+
+.sidebar-stats strong {
+  display: block;
+  margin-top: 0.25rem;
+  font-size: 1.35rem;
+}
+
+/* ── Album list (sidebar) ────────────────────────────────────────── */
+
+.sidebar-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  padding-right: 0.25rem;
+}
+
+.album-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  width: 100%;
+  padding-top: 0.75rem;
+  padding-right: 1.2rem;
+  padding-bottom: 0.75rem;
+  border: 0;
+  border-radius: 999px;
+  cursor: pointer;
+  text-align: left;
+  background: transparent;
+  color: var(--color-text);
+  transition: transform 140ms ease, background-color 140ms ease;
+}
+
+.album-row:hover {
+  transform: translateY(-1px);
+}
+
+.album-row.active {
+  background: var(--color-surface-level-2);
+  color: var(--color-primary-container);
+}
+
+.album-row small {
+  color: var(--color-text-subtle);
+}
+
+.album-row-name {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}

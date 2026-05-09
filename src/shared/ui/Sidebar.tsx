@@ -1,3 +1,4 @@
+import "./Sidebar.css";
 import type { LibraryOverview } from "../types/library";
 
 type SidebarProps = {

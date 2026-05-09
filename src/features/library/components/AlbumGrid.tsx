@@ -1,5 +1,6 @@
 import type { AlbumSummary } from "../../../shared/types/library";
 import { convertFileSrc } from "@tauri-apps/api/core";
+import "./AlbumGrid.css";
 
 type AlbumGridProps = {
   albums: AlbumSummary[];

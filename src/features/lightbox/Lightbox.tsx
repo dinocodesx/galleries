@@ -7,7 +7,6 @@ type LightboxProps = {
   photo: PhotoRecord;
   photoIndex: number;
   photoCount: number;
-  albumPath: string | null;
   onClose: () => void;
   onPrevious: () => void;
   onNext: () => void;
@@ -17,7 +16,6 @@ export function Lightbox({
   photo,
   photoIndex,
   photoCount,
-  albumPath,
   onClose,
   onPrevious,
   onNext,
@@ -68,9 +66,9 @@ export function Lightbox({
       ) : null}
 
       <div className="lightbox-topbar" onClick={(event) => event.stopPropagation()}>
-         <span>{photo.fileName}</span>
-         <span style={{ margin: '0 0.5rem', opacity: 0.5 }}>&bull;</span>
-         <span style={{ opacity: 0.8 }}>{formatShotDate(photo.sortTimestamp)}</span>
+         <span className="lightbox-topbar-filename">{photo.fileName}</span>
+         <span className="lightbox-topbar-sep">•</span>
+         <span className="lightbox-topbar-date">{formatShotDate(photo.sortTimestamp)}</span>
       </div>
     </div>
   );

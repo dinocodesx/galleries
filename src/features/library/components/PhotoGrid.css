@@ -1,0 +1,58 @@
+/* ── Photo Grid ──────────────────────────────────────────────────── */
+
+.photo-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+  gap: 12px;
+}
+
+/* ── Photo Tile ──────────────────────────────────────────────────── */
+
+.photo-tile {
+  padding: 0;
+  border: 0;
+  border-radius: 16px;
+  cursor: pointer;
+  text-align: left;
+  background: var(--color-surface-level-1);
+  border: 1px solid var(--color-border);
+  transition: transform 140ms ease, box-shadow 140ms ease, border-color 140ms ease;
+  overflow: hidden;
+  position: relative;
+}
+
+.photo-tile:hover {
+  transform: translateY(-2px);
+  border-color: var(--color-outline);
+}
+
+.photo-tile img {
+  width: 100%;
+  aspect-ratio: 1;
+  display: block;
+  object-fit: cover;
+  background: var(--color-surface-level-2);
+}
+
+/* ── Photo meta (if ever used) ───────────────────────────────────── */
+
+.photo-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1rem;
+  margin-top: 0.7rem;
+}
+
+.photo-meta span {
+  min-width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.photo-meta small {
+  display: block;
+  color: var(--color-text-subtle);
+  font-size: 0.82rem;
+}

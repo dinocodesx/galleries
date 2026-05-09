@@ -12,10 +12,9 @@
   gap: 1rem;
   padding: 3rem;
   border-radius: 2rem;
-  background: rgba(255, 255, 255, 0.72);
-  border: 1px solid rgba(25, 33, 42, 0.08);
-  box-shadow: 0 20px 60px rgba(56, 67, 79, 0.12);
-  backdrop-filter: blur(18px);
+  background: var(--color-surface-container);
+  border: 1px solid var(--color-border);
+  box-shadow: var(--shadow-panel);
 }
 
 .indexing-card h1 {
@@ -30,7 +29,7 @@
   height: 0.75rem;
   overflow: hidden;
   border-radius: 999px;
-  background: var(--color-surface-muted);
+  background: var(--color-surface-level-2);
 }
 
 .progress-bar {
@@ -58,7 +57,7 @@
 .indexing-stats div {
   padding: 0.95rem 1rem;
   border-radius: 1rem;
-  background: rgba(255, 255, 255, 0.7);
+  background: var(--color-surface-level-2);
   border: 1px solid var(--color-border);
 }
 
@@ -78,7 +77,7 @@
   margin: 0;
   padding: 0.9rem 1rem;
   border-radius: 1rem;
-  background: rgba(255, 255, 255, 0.62);
+  background: var(--color-surface-level-2);
   border: 1px solid var(--color-border);
   color: var(--color-text-muted);
   overflow-wrap: anywhere;

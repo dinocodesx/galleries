@@ -5,6 +5,7 @@ use crate::{
     models::IndexingProgress,
 };
 
+#[allow(clippy::too_many_arguments)]
 pub fn indexing_progress(
     stage: &'static str,
     progress: f64,

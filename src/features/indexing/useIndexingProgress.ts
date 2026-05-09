@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import { listenToIndexingProgress } from "../services/tauri/events";
-import type { IndexingProgress } from "../shared/types/library";
+import { listenToIndexingProgress } from "../../services/tauri/events";
+import type { IndexingProgress } from "../../shared/types/library";
 
 const defaultProgress: IndexingProgress = {
   stage: "counting",

@@ -54,10 +54,10 @@ pub fn scan_library(root_path: &Path, window: &WebviewWindow) -> AppResult<ScanR
         .filter_map(Result::ok)
         .count();
 
-    let root_key = root_path.to_string_lossy().to_string();
+    let root_key = root_path.to_string_lossy().into_owned();
     let root_name = root_path
         .file_name()
-        .map(|segment| segment.to_string_lossy().to_string())
+        .map(|segment| segment.to_string_lossy().into_owned())
         .unwrap_or_else(|| "Library Root".to_string());
 
     let mut folders = BTreeMap::<String, FolderAccumulator>::new();
@@ -83,35 +83,42 @@ pub fn scan_library(root_path: &Path, window: &WebviewWindow) -> AppResult<ScanR
     {
         processed_entries += 1;
         let path = entry.path().to_path_buf();
-        let path_string = path.to_string_lossy().to_string();
+        let path_string = path.to_string_lossy().into_owned();
 
         if entry.file_type().is_dir() {
-            let folder_path = path_string.clone();
-            folders.entry(folder_path.clone()).or_insert(FolderAccumulator {
-                name: path_name_or_default(&path, "Untitled Folder"),
-                depth: relative_depth(root_path, &path),
-                path: folder_path,
-                photo_count: 0,
-                latest_timestamp: i64::MIN,
-                cover_photo_path: None,
-            });
+            if !folders.contains_key(&path_string) {
+                folders.insert(
+                    path_string.clone(),
+                    FolderAccumulator {
+                        name: path_name_or_default(&path, "Untitled Folder"),
+                        depth: relative_depth(root_path, &path),
+                        path: path_string.clone(),
+                        photo_count: 0,
+                        latest_timestamp: i64::MIN,
+                        cover_photo_path: None,
+                    },
+                );
+            }
         } else if entry.file_type().is_file() && is_supported_image(&path) {
-            let album_path = path
-                .parent()
-                .map(Path::to_path_buf)
-                .unwrap_or_else(|| root_path.to_path_buf());
-            let album_key = album_path.to_string_lossy().to_string();
+            let album_path = path.parent().unwrap_or(root_path);
+            let album_key = album_path.to_string_lossy().into_owned();
             let sort_timestamp = extract_sort_timestamp(&path)?;
 
-            let folder_entry = folders.entry(album_key.clone()).or_insert(FolderAccumulator {
-                name: path_name_or_default(&album_path, "Untitled Folder"),
-                depth: relative_depth(root_path, &album_path),
-                path: album_key.clone(),
-                photo_count: 0,
-                latest_timestamp: i64::MIN,
-                cover_photo_path: None,
-            });
+            if !folders.contains_key(&album_key) {
+                folders.insert(
+                    album_key.clone(),
+                    FolderAccumulator {
+                        name: path_name_or_default(album_path, "Untitled Folder"),
+                        depth: relative_depth(root_path, album_path),
+                        path: album_key.clone(),
+                        photo_count: 0,
+                        latest_timestamp: i64::MIN,
+                        cover_photo_path: None,
+                    },
+                );
+            }
 
+            let folder_entry = folders.get_mut(&album_key).unwrap();
             folder_entry.photo_count += 1;
             if sort_timestamp >= folder_entry.latest_timestamp {
                 folder_entry.latest_timestamp = sort_timestamp;
@@ -126,7 +133,7 @@ pub fn scan_library(root_path: &Path, window: &WebviewWindow) -> AppResult<ScanR
             });
         }
 
-        if processed_entries % 25 == 0 || processed_entries == total_entries {
+        if processed_entries.is_multiple_of(25) || processed_entries == total_entries {
             emit_progress(
                 window,
                 indexing_progress(
@@ -152,7 +159,7 @@ pub fn scan_library(root_path: &Path, window: &WebviewWindow) -> AppResult<ScanR
 
 fn path_name_or_default(path: &Path, fallback: &str) -> String {
     path.file_name()
-        .map(|segment| segment.to_string_lossy().to_string())
+        .map(|segment| segment.to_string_lossy().into_owned())
         .unwrap_or_else(|| fallback.to_string())
 }
 

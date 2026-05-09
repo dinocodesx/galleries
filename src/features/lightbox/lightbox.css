@@ -79,3 +79,16 @@
   justify-content: center;
   align-items: center;
 }
+
+.lightbox-topbar-filename {
+  /* no extra style needed; inherits topbar color */
+}
+
+.lightbox-topbar-sep {
+  margin: 0 0.5rem;
+  opacity: 0.5;
+}
+
+.lightbox-topbar-date {
+  opacity: 0.8;
+}

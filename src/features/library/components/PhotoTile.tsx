@@ -1,5 +1,4 @@
 import { buildAssetUrl } from "../../../services/tauri/assets";
-import { formatShotDate } from "../../../shared/lib/format";
 import type { PhotoRecord } from "../../../shared/types/library";
 
 type PhotoTileProps = {
